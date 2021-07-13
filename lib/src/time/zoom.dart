@@ -29,7 +29,7 @@ class _TimeZoomState extends State<TimeZoom>
   late AnimationController _animationController;
   Animation<double>? _animation;
 
-  TimeController get _controller => DefaultTimeController.of(context)!;
+  late TimeController _controller;
   ScrollController? _scrollController;
   bool _scrollControllerIsInitialized = false;
 
@@ -59,6 +59,7 @@ class _TimeZoomState extends State<TimeZoom>
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+    _controller = DefaultTimeController.of(context)!;
     _scrollController?.dispose();
     _scrollControllerIsInitialized = false;
   }
@@ -78,6 +79,7 @@ class _TimeZoomState extends State<TimeZoom>
 
   @override
   void dispose() {
+    _controller.removeListener(_onControllerChanged);
     _animationController.dispose();
     _scrollController?.dispose();
     super.dispose();
