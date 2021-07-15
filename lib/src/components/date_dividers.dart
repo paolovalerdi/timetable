@@ -46,31 +46,41 @@ class DateDividersStyle {
     BuildContext context, {
     Color? color,
     double? width,
+    bool allowTemporalOffset = true,
   }) {
     final dividerBorderSide = Divider.createBorderSide(context);
     return DateDividersStyle.raw(
       color: color ?? dividerBorderSide.color,
       width: width ?? dividerBorderSide.width,
+      allowTemporalOffset: allowTemporalOffset,
     );
   }
 
   const DateDividersStyle.raw({
     required this.color,
     required this.width,
+    required this.allowTemporalOffset,
   }) : assert(width >= 0);
 
   final Color color;
   final double width;
+  final bool allowTemporalOffset;
 
-  DateDividersStyle copyWith({Color? color, double? width}) {
+  DateDividersStyle copyWith({
+    Color? color,
+    double? width,
+    bool? allowTemporalOffset,
+  }) {
     return DateDividersStyle.raw(
       color: color ?? this.color,
       width: width ?? this.width,
+      allowTemporalOffset: allowTemporalOffset ?? this.allowTemporalOffset,
     );
   }
 
   @override
   int get hashCode => hashValues(color, width);
+
   @override
   bool operator ==(Object other) {
     return other is DateDividersStyle &&
@@ -96,7 +106,8 @@ class _DateDividersPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     canvas.clipRect(Offset.zero & size);
     final pageValue = controller.value;
-    final initialOffset = 1 - pageValue.page % 1;
+    final initialOffset =
+        style.allowTemporalOffset ? 1 - pageValue.page % 1 : 1;
     for (var i = -1; i + initialOffset < pageValue.visibleDayCount + 1; i++) {
       final x = (initialOffset + i) * size.width / pageValue.visibleDayCount;
       canvas.drawLine(Offset(x, 0), Offset(x, size.height), _paint);
