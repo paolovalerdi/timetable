@@ -1,8 +1,8 @@
 import 'dart:ui';
 
-import 'package:black_hole_flutter/black_hole_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:black_hole_flutter/black_hole_flutter.dart';
 
 import '../config.dart';
 import '../localization.dart';
@@ -28,18 +28,14 @@ class TimeIndicator extends StatelessWidget {
         super(key: key);
 
   static String formatHour(Duration time) => _format(DateFormat.j(), time);
-
   static String formatHourMinute(Duration time) =>
       _format(DateFormat.jm(), time);
-
   static String formatHourMinuteSecond(Duration time) =>
       _format(DateFormat.jms(), time);
 
   static String formatHour24(Duration time) => _format(DateFormat.H(), time);
-
   static String formatHour24Minute(Duration time) =>
       _format(DateFormat.Hm(), time);
-
   static String formatHour24MinuteSecond(Duration time) =>
       _format(DateFormat.Hms(), time);
 
@@ -85,7 +81,7 @@ class TimeIndicatorStyle {
     double? width,
     double? height,
     TextAlign? textAlign,
-    bool alwaysUse24HourFormat = true,
+    bool alwaysUse24HourFormat = false,
   }) {
     assert(time.isValidTimetableTimeOfDay);
 
@@ -152,7 +148,6 @@ class TimeIndicatorStyle {
 
   @override
   int get hashCode => hashValues(textStyle, label);
-
   @override
   bool operator ==(Object other) {
     return other is TimeIndicatorStyle &&

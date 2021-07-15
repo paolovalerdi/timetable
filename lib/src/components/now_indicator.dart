@@ -101,7 +101,6 @@ class NowIndicatorStyle {
 
   @override
   int get hashCode => hashValues(shape, lineColor, lineWidth);
-
   @override
   bool operator ==(Object other) {
     return other is NowIndicatorStyle &&
@@ -153,7 +152,6 @@ abstract class NowIndicatorShape {
 
   @override
   int get hashCode;
-
   @override
   bool operator ==(Object other);
 }
@@ -181,7 +179,6 @@ class EmptyNowIndicatorShape extends NowIndicatorShape {
 
   @override
   int get hashCode => 0;
-
   @override
   bool operator ==(Object other) {
     return other is EmptyNowIndicatorShape;
@@ -232,7 +229,6 @@ class CircleNowIndicatorShape extends NowIndicatorShape {
 
   @override
   int get hashCode => hashValues(color, radius);
-
   @override
   bool operator ==(Object other) {
     return other is CircleNowIndicatorShape &&
@@ -290,7 +286,6 @@ class TriangleNowIndicatorShape extends NowIndicatorShape {
 
   @override
   int get hashCode => hashValues(color, size);
-
   @override
   bool operator ==(Object other) {
     return other is TriangleNowIndicatorShape &&
@@ -313,7 +308,6 @@ class _NowIndicatorPainter extends CustomPainter {
         devicePixelRatio: devicePixelRatio,
         repaintNotifier: ValueNotifier<DateTime>(DateTime.now()),
       );
-
   _NowIndicatorPainter._({
     required this.controller,
     required this.style,
@@ -337,7 +331,7 @@ class _NowIndicatorPainter extends CustomPainter {
 
     final pageValue = controller.value;
     final dateWidth = (size.width - style.leftOffset) / pageValue.visibleDayCount;
-    final now = DateTime.now();
+    final now = DateTimeTimetable.now();
     final temporalXOffset = style.allowTemporalOffset
         ? now.copyWith(isUtc: true).atStartOfDay.page - pageValue.page
         : 0.0;
@@ -362,7 +356,7 @@ class _NowIndicatorPainter extends CustomPainter {
       Future<void>.delayed(delay).then((_) {
         // [ChangeNotifier.notifyListeners] is protected, so we use a
         // [ValueNotifier] and always set a different time.
-        _repaintNotifier.value = DateTime.now();
+        _repaintNotifier.value = DateTimeTimetable.now();
       }),
     );
   }
