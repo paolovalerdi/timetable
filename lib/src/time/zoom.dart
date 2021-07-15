@@ -140,7 +140,7 @@ class _TimeZoomState extends State<TimeZoom>
 
   void _onScaleUpdate(ScaleUpdateDetails details) {
     final newDuration = (_initialRange!.duration * (1 / details.verticalScale))
-        .coerceIn(_controller.minDuration, _controller.maxRange.duration);
+        .coerceIn(6.hours, 12.hours);
 
     final newFocus = _focusToDuration(details.localFocalPoint.dy, newDuration);
     final newStart = _lastFocus! - newFocus;
