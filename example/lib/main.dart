@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:supercharged/supercharged.dart';
 import 'package:timetable/timetable.dart';
+import 'package:timetable_example/playground.dart';
 
 // ignore: unused_import
 import 'positioning_demo.dart';
@@ -11,7 +12,7 @@ import 'utils.dart';
 
 void main() async {
   initDebugOverlay();
-  runApp(ExampleApp(child: TimetableExample()));
+  runApp(ExampleApp(child: Playground()));
 }
 
 class TimetableExample extends StatefulWidget {
