@@ -40,6 +40,7 @@ class _TimeZoomState extends State<TimeZoom>
   double get _outerChildHeight =>
       _parentHeight *
       (_controller.maxRange.duration / _controller.value.duration);
+
   double get _outerOffset {
     final timeRange = _controller.value;
     return (timeRange.startTime - _controller.maxRange.startTime) /
@@ -98,7 +99,6 @@ class _TimeZoomState extends State<TimeZoom>
           _controller.addListener(_onControllerChanged);
           _scrollControllerIsInitialized = true;
         }
-
         return GestureDetector(
           onScaleStart: _onScaleStart,
           onScaleUpdate: _onScaleUpdate,
@@ -111,10 +111,12 @@ class _TimeZoomState extends State<TimeZoom>
                 builder: (context, _, child) {
                   // Layouts the child so only [_controller.maxRange] is
                   // visible.
-                  final innerChildHeight = _outerChildHeight *
-                      (1.days / _controller.maxRange.duration);
-                  final innerOffset = -innerChildHeight *
-                      (_controller.maxRange.startTime / 1.days);
+                  final padding = MediaQuery.of(context).padding;
+                  final innerChildHeight =
+                      (_outerChildHeight - (padding.top + padding.bottom)) *
+                          (1.days / _controller.maxRange.duration);
+                  final innerOffset = (-innerChildHeight *
+                      (_controller.maxRange.startTime / 1.days)) + padding.top;
 
                   return SizedBox(
                     height: _outerChildHeight,
@@ -200,6 +202,7 @@ class _TimeZoomState extends State<TimeZoom>
     Duration visibleDuration,
   ) =>
       visibleDuration * (focalPoint / _parentHeight);
+
   void _setNewTimeRange(Duration startTime, Duration duration) {
     final actualStartTime = startTime.coerceIn(
       _controller.maxRange.startTime,
@@ -340,6 +343,7 @@ class _RenderVerticalOverflowBox extends RenderShiftedBox {
 
   double get height => _height;
   double _height;
+
   set height(double value) {
     if (_height == value) return;
     _height = value;
@@ -348,6 +352,7 @@ class _RenderVerticalOverflowBox extends RenderShiftedBox {
 
   double get offset => _offset;
   double _offset;
+
   set offset(double value) {
     if (_offset == value) return;
     _offset = value;
