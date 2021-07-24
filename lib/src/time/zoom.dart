@@ -105,10 +105,6 @@ class _TimeZoomState extends State<TimeZoom>
           onScaleEnd: _onScaleEnd,
           child: ClipRect(
             child: _NoDragSingleChildScrollView(
-              padding: EdgeInsets.only(
-                top: MediaQuery.of(context).padding.top,
-                bottom: MediaQuery.of(context).padding.bottom,
-              ),
               controller: _scrollController!,
               child: ValueListenableBuilder<TimeRange>(
                 valueListenable: _controller,
