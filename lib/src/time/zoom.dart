@@ -126,10 +126,13 @@ class _TimeZoomState extends State<TimeZoom>
                 builder: (context, _, child) {
                   // Layouts the child so only [_controller.maxRange] is
                   // visible.
-                  final innerChildHeight = _outerChildHeight *
-                      (1.days / _controller!.maxRange.duration);
-                  final innerOffset = -innerChildHeight *
-                      (_controller!.maxRange.startTime / 1.days);
+                  final padding = MediaQuery.of(context).padding;
+                  final innerChildHeight =
+                      (_outerChildHeight - (padding.top + padding.bottom)) *
+                          (1.days / _controller!.maxRange.duration);
+                  final innerOffset = (-innerChildHeight *
+                          (_controller!.maxRange.startTime / 1.days)) +
+                      padding.top;
 
                   return SizedBox(
                     height: _outerChildHeight,
@@ -155,7 +158,7 @@ class _TimeZoomState extends State<TimeZoom>
 
   void _onScaleUpdate(ScaleUpdateDetails details) {
     final newDuration = (_initialRange!.duration * (1 / details.verticalScale))
-        .coerceIn(_controller!.minDuration, _controller!.maxRange.duration);
+        .coerceIn(6.hours, 12.hours);
 
     final newFocus = _focusToDuration(details.localFocalPoint.dy, newDuration);
     final newStart = _lastFocus! - newFocus;
