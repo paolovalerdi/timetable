@@ -6,7 +6,6 @@ import 'package:intl/intl.dart';
 import 'package:supercharged/supercharged.dart';
 import 'package:timetable/timetable.dart';
 import 'package:timetable_example/daily_timetable.dart';
-import 'package:timetable_example/pick_now_indicator.dart';
 import 'package:timetable_example/weekly_timetable.dart';
 
 import 'timetable_date_header.dart';
@@ -59,7 +58,6 @@ extension TimetableViewModeExtension on TimetableViewMode {
         return TimetableViewMode.weekly;
       case TimetableViewMode.weekly:
         return TimetableViewMode.daily;
-        break;
     }
   }
 }
@@ -121,11 +119,36 @@ class _PlaygroundState extends State<Playground> with TickerProviderStateMixin {
           lineColor: Colors.black,
         ),
       ),
-      child: Column(
-        children: [
-          _fakeAppbar(),
-          Expanded(child: _timetable(context)),
-        ],
+      child: Scaffold(
+        extendBody: true,
+        extendBodyBehindAppBar: true,
+        appBar: AppBar(
+          title: Text('Horario'),
+          backgroundColor: Colors.white.withOpacity(0.8),
+          elevation: 0,
+          actions: [
+            IconButton(
+              icon: Icon(
+                _viewMode.toggleIcon,
+              ),
+              onPressed: () {
+                setState(() {
+                  _viewMode = _viewMode.inverseMode;
+                  _dateController.visibleRange = _viewMode.visibleDateRange;
+                  _dateController.animateToToday(
+                    vsync: this,
+                    duration: 450.milliseconds,
+                  );
+                });
+              },
+            )
+          ],
+        ),
+        bottomNavigationBar: Container(
+          height: 56,
+          color: Colors.white.withOpacity(0.5),
+        ),
+        body: _timetable(context),
       ),
     );
   }

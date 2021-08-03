@@ -50,7 +50,7 @@ class ExampleApp extends StatelessWidget {
           ],
           supportedLocales: _supportedLocales,
           builder: kIsWeb ? null : DebugOverlay.builder(),
-          home: SafeArea(child: Scaffold(body: child)),
+          home: Scaffold(body: child),
         );
       },
     );
@@ -74,11 +74,6 @@ class ExampleApp extends StatelessWidget {
       appBarTheme: theme.appBarTheme.copyWith(backwardsCompatibility: false),
     );
 
-    // We want to extend Timetable behind the navigation bar.
-    SystemChrome.setSystemUIOverlayStyle(
-      brightness.contrastSystemUiOverlayStyle
-          .copyWith(systemNavigationBarColor: Colors.transparent),
-    );
     return theme;
   }
 }
