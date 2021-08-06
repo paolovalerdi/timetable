@@ -91,7 +91,7 @@ class _HourDividersPainter extends CustomPainter {
     final heightPerHour = size.height / Duration.hoursPerDay;
     for (final h in InternalDateTimeTimetable.innerDateHours) {
       final y = h * heightPerHour;
-      canvas.drawLine(Offset(-8, y), Offset(size.width, y), _paint);
+      canvas.drawLine(Offset(0, y), Offset(size.width, y), _paint);
     }
   }
 
