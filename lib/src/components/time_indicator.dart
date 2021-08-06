@@ -1,8 +1,8 @@
 import 'dart:ui';
 
+import 'package:black_hole_flutter/black_hole_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:black_hole_flutter/black_hole_flutter.dart';
 
 import '../config.dart';
 import '../localization.dart';
@@ -28,14 +28,18 @@ class TimeIndicator extends StatelessWidget {
         super(key: key);
 
   static String formatHour(Duration time) => _format(DateFormat.j(), time);
+
   static String formatHourMinute(Duration time) =>
       _format(DateFormat.jm(), time);
+
   static String formatHourMinuteSecond(Duration time) =>
       _format(DateFormat.jms(), time);
 
   static String formatHour24(Duration time) => _format(DateFormat.H(), time);
+
   static String formatHour24Minute(Duration time) =>
       _format(DateFormat.Hm(), time);
+
   static String formatHour24MinuteSecond(Duration time) =>
       _format(DateFormat.Hms(), time);
 
@@ -52,7 +56,14 @@ class TimeIndicator extends StatelessWidget {
     final style = this.style ??
         TimetableTheme.orDefaultOf(context).timeIndicatorStyleProvider(time);
 
-    return Text(style.label, style: style.textStyle);
+    return SizedBox(
+      width: style.width,
+      child: Text(
+        style.label,
+        style: style.textStyle,
+        textAlign: style.textAlign,
+      ),
+    );
   }
 }
 
@@ -69,6 +80,8 @@ class TimeIndicatorStyle {
     TextStyle? textStyle,
     String? label,
     bool alwaysUse24HourFormat = false,
+    TextAlign? textAlign,
+    double? width,
   }) {
     assert(time.isValidTimetableTimeOfDay);
 
@@ -92,26 +105,40 @@ class TimeIndicatorStyle {
                 ? TimeIndicator.formatHour24(time)
                 : TimeIndicator.formatHour(time);
           }(),
+      width: width,
+      textAlign: textAlign,
     );
   }
 
   const TimeIndicatorStyle.raw({
     required this.textStyle,
     required this.label,
+    this.width,
+    this.textAlign,
   });
 
   final TextStyle textStyle;
   final String label;
+  final double? width;
+  final TextAlign? textAlign;
 
-  TimeIndicatorStyle copyWith({TextStyle? textStyle, String? label}) {
+  TimeIndicatorStyle copyWith({
+    TextStyle? textStyle,
+    String? label,
+    double? width,
+    TextAlign? textAlign,
+  }) {
     return TimeIndicatorStyle.raw(
       textStyle: textStyle ?? this.textStyle,
       label: label ?? this.label,
+      width: width ?? this.width,
+      textAlign: textAlign ?? this.textAlign,
     );
   }
 
   @override
   int get hashCode => hashValues(textStyle, label);
+
   @override
   bool operator ==(Object other) {
     return other is TimeIndicatorStyle &&
