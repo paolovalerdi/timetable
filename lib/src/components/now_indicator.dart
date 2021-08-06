@@ -303,6 +303,7 @@ class _NowIndicatorPainter extends CustomPainter {
     required ValueNotifier<DateTime> repaintNotifier,
   })  : _paint = Paint()
           ..color = style.lineColor
+          ..strokeCap = StrokeCap.round
           ..strokeWidth = style.lineWidth,
         _repaintNotifier = repaintNotifier,
         super(repaint: Listenable.merge([controller, repaintNotifier]));
