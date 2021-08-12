@@ -61,7 +61,7 @@ Some date/time-related parameters also have special suffixes:
 * `timeOfDay`: A `Duration` between zero and 24 hours.
 * `dayOfWeek`: An `int` between one and seven ([`DateTime.monday`](https://api.flutter.dev/flutter/dart-core/DateTime/monday-constant.html) through [`DateTime.sunday`](https://api.flutter.dev/flutter/dart-core/DateTime/sunday-constant.html)).
 
-Timetable currently offers localizations for Chinese, English, German, Italian, Japanese, and Spanish.
+Timetable currently offers localizations for Chinese, English, French, German, Italian, Japanese, Portuguese, and Spanish.
 Even if you're just supporting English in your app, you have to add Timetable's localization delegate to your `MaterialApp`/`CupertinoApp`/`WidgetsApp`:
 
 ```dart
@@ -75,7 +75,7 @@ MaterialApp(
 ```
 
 > You want to contribute a new localization?
-> Great!
+> Awesome!
 > Please follow the steps listed in the doc comment of [`TimetableLocalizationsDelegate`].
 
 ### 1. Define your [`Event`]s
@@ -122,7 +122,8 @@ You can also programmatically change those and, e.g., animate out to reveal the 
 final myTimeController = TimeController(
   // All parameters are optional. By default, the whole day is revealed
   // initially and you can zoom in to view just a single minute.
-  minDuration: 15.minutes,
+  minDuration: 15.minutes, // The closest you can zoom in.
+  maxDuration: 23.hours, // The farthest you can zoom out.
   initialRange: TimeRange(9.hours, 17.hours),
   maxRange: TimeRange(0.hours, 24.hours),
 );

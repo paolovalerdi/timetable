@@ -11,7 +11,10 @@ final _supportedLocales = [
   const Locale('de'),
   const Locale('en'),
   const Locale('es'),
+  const Locale('fr'),
+  const Locale('it'),
   const Locale('ja'),
+  const Locale('pt'),
   const Locale('zh', 'CN'),
   const Locale('zh', 'TW'),
 ];
@@ -44,9 +47,7 @@ class ExampleApp extends StatelessWidget {
           locale: overrideState.locale,
           localizationsDelegates: [
             TimetableLocalizationsDelegate(),
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
+            ...GlobalMaterialLocalizations.delegates,
           ],
           supportedLocales: _supportedLocales,
           builder: kIsWeb ? null : DebugOverlay.builder(),

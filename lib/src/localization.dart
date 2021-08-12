@@ -10,8 +10,10 @@ import 'week.dart';
 /// * `de` – German
 /// * `en` – English
 /// * `es` – Spanish
+/// * `fr` – French
 /// * `it` – Italian
 /// * `ja` – Japanese
+/// * `pt` – Portuguese
 /// * `zh_CN` – Chinese (Simplified)
 /// * `zh_TW` – Chinese (Traditional)
 ///
@@ -32,27 +34,53 @@ import 'week.dart';
 /// 2. Add your class to the `_getLocalization` method below (again, ordered
 ///    alphabetically).
 /// 3. List the new locale in the README.
-/// 4. Open a pull request and you're done 🎉
+/// 4. Add the locale to `_supportedLocale` in `example/lib/utils.dart`.
+/// 5. Open a pull request and you're done 🎉
 class TimetableLocalizationsDelegate
     extends LocalizationsDelegate<TimetableLocalizations> {
-  const TimetableLocalizationsDelegate({this.setIntlLocale = true});
+  const TimetableLocalizationsDelegate({
+    this.setIntlLocale = true,
+    this.fallbackLocale,
+  });
 
+  /// Whether to update `Intl.defaultLocale` when the app's locale changes.
   final bool setIntlLocale;
 
+  /// When localizations for a requested locale are missing, Timetable will
+  /// instead use this locale.
+  ///
+  /// If this is `null` (the default), Timetable widgets depending on
+  /// localizations will produce errors.
+  ///
+  /// If this is set, the locale must be supported by Timetable.
+  final Locale? fallbackLocale;
+
   @override
-  bool isSupported(Locale locale) => _getLocalization(locale) != null;
+  bool isSupported(Locale locale) {
+    assert(
+      fallbackLocale == null || _getLocalization(fallbackLocale!) != null,
+      "Timetable doesn't support the `fallbackLocale` \"$fallbackLocale\".",
+    );
+    return _getLocalization(locale) != null || fallbackLocale != null;
+  }
 
   @override
   Future<TimetableLocalizations> load(Locale locale) {
     assert(isSupported(locale));
+
     if (setIntlLocale) Intl.defaultLocale = locale.toLanguageTag();
-    return SynchronousFuture(_getLocalization(locale)!);
+
+    var localizations = _getLocalization(locale);
+    if (fallbackLocale != null) {
+      localizations ??= _getLocalization(fallbackLocale!)!;
+    }
+    return SynchronousFuture(localizations!);
   }
 
   @override
   bool shouldReload(TimetableLocalizationsDelegate old) => false;
 
-  TimetableLocalizations? _getLocalization(Locale locale) {
+  static TimetableLocalizations? _getLocalization(Locale locale) {
     switch (locale.languageCode) {
       case 'de':
         return const TimetableLocalizationDe();
@@ -60,10 +88,14 @@ class TimetableLocalizationsDelegate
         return const TimetableLocalizationEn();
       case 'es':
         return const TimetableLocalizationEs();
+      case 'fr':
+        return const TimetableLocalizationFr();
       case 'it':
         return const TimetableLocalizationIt();
       case 'ja':
         return const TimetableLocalizationJa();
+      case 'pt':
+        return const TimetableLocalizationPt();
       case 'zh':
         if (locale.countryCode?.toLowerCase() == 'tw') {
           return const TimetableLocalizationZhTw();
@@ -98,7 +130,7 @@ bool debugCheckHasTimetableLocalizations(BuildContext context) {
         ),
         ...context.describeMissingAncestor(
           expectedAncestorType: TimetableLocalizations,
-        )
+        ),
       ]);
     }
     return true;
@@ -138,7 +170,7 @@ extension BuildContextTimetableLocalizations on BuildContext {
   }
 }
 
-// You want to contribute a new localization? Great! Please follow the steps
+// You want to contribute a new localization? Awesome! Please follow the steps
 // listed in the doc comment of [TimetableLocalizationsDelegate] above.
 
 class TimetableLocalizationDe extends TimetableLocalizations {
@@ -195,6 +227,24 @@ class TimetableLocalizationEs extends TimetableLocalizations {
       'Semana ${week.weekOfYear}, ${week.weekBasedYear}';
 }
 
+class TimetableLocalizationFr extends TimetableLocalizations {
+  const TimetableLocalizationFr();
+
+  @override
+  List<String> weekLabels(Week week) {
+    return [
+      weekOfYear(week),
+      'Semaine ${week.weekOfYear}',
+      'S ${week.weekOfYear}',
+      '${week.weekOfYear}',
+    ];
+  }
+
+  @override
+  String weekOfYear(Week week) =>
+      'Semaine ${week.weekOfYear}, ${week.weekBasedYear}';
+}
+
 class TimetableLocalizationIt extends TimetableLocalizations {
   const TimetableLocalizationIt();
 
@@ -229,6 +279,24 @@ class TimetableLocalizationJa extends TimetableLocalizations {
   @override
   String weekOfYear(Week week) =>
       'Week ${week.weekOfYear}, ${week.weekBasedYear}';
+}
+
+class TimetableLocalizationPt extends TimetableLocalizations {
+  const TimetableLocalizationPt();
+
+  @override
+  List<String> weekLabels(Week week) {
+    return [
+      weekOfYear(week),
+      'Semana ${week.weekOfYear}',
+      'S ${week.weekOfYear}',
+      '${week.weekOfYear}',
+    ];
+  }
+
+  @override
+  String weekOfYear(Week week) =>
+      'Semana ${week.weekOfYear}, ${week.weekBasedYear}';
 }
 
 class TimetableLocalizationZhCn extends TimetableLocalizations {
