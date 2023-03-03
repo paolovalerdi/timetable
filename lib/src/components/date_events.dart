@@ -1,6 +1,6 @@
 import 'dart:ui';
 
-import 'package:collection/collection.dart';
+import 'package:collection/collection.dart' hide IterableIntegerExtension;
 import 'package:flutter/widgets.dart';
 
 import '../config.dart';
@@ -167,6 +167,7 @@ class DateEventsStyle {
         minEventDeltaForStacking,
         stackedEventSpacing,
       );
+
   @override
   bool operator ==(Object other) {
     return other is DateEventsStyle &&

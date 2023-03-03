@@ -1,12 +1,10 @@
 import 'package:black_hole_flutter/black_hole_flutter.dart';
-import 'package:debug_overlay/debug_overlay.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:timetable/timetable.dart';
 
-final _mediaOverrideState = ValueNotifier(MediaOverrideState());
 final _supportedLocales = [
   const Locale('de'),
   const Locale('en'),
@@ -21,12 +19,6 @@ final _supportedLocales = [
 
 void initDebugOverlay() {
   // https://pub.dev/packages/debug_overlay
-  DebugOverlay.helpers.value = [
-    MediaOverrideDebugHelper(
-      _mediaOverrideState,
-      supportedLocales: _supportedLocales,
-    )
-  ];
 }
 
 class ExampleApp extends StatelessWidget {
@@ -36,24 +28,16 @@ class ExampleApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ValueListenableBuilder<MediaOverrideState>(
-      valueListenable: _mediaOverrideState,
-      builder: (context, overrideState, _) {
-        return MaterialApp(
-          title: 'Timetable example',
-          theme: _createTheme(Brightness.light),
-          darkTheme: _createTheme(Brightness.dark),
-          themeMode: overrideState.themeMode,
-          locale: overrideState.locale,
-          localizationsDelegates: [
-            TimetableLocalizationsDelegate(),
-            ...GlobalMaterialLocalizations.delegates,
-          ],
-          supportedLocales: _supportedLocales,
-          builder: kIsWeb ? null : DebugOverlay.builder(),
-          home: SafeArea(child: Scaffold(body: child)),
-        );
-      },
+    return MaterialApp(
+      title: 'Timetable example',
+      theme: _createTheme(Brightness.light),
+      darkTheme: _createTheme(Brightness.dark),
+      localizationsDelegates: [
+        TimetableLocalizationsDelegate(),
+        ...GlobalMaterialLocalizations.delegates,
+      ],
+      supportedLocales: _supportedLocales,
+      home: SafeArea(child: Scaffold(body: child)),
     );
   }
 

@@ -618,7 +618,7 @@ class _ScaleGestureRecognizer extends OneSequenceGestureRecognizer {
       // Change: We use the hit slop instead of the pan slop to allow scrolling
       // even inside a scrollable parent.
       if (spanDelta > computeScaleSlop(pointerDeviceKind) ||
-          focalPointDelta > computeHitSlop(pointerDeviceKind))
+          focalPointDelta > computeHitSlop(pointerDeviceKind, null))
         resolve(GestureDisposition.accepted);
     } else if (_state.index >= _ScaleState.accepted.index) {
       resolve(GestureDisposition.accepted);
